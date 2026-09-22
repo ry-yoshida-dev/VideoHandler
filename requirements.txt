@@ -1,0 +1,5 @@
+numpy
+opencv-contrib-python
+torch
+torchcodec
+torch_modules @ git+https://github.com/ry-yoshida-dev/TorchModules.git

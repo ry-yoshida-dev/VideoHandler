@@ -1,0 +1,86 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "video-handler"
+version = "0.0.1"
+authors = [
+  { name = "Ryuto Yoshida" },
+]
+description = "Backend-agnostic video reading and writing over OpenCV and torchcodec."
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy",
+    "opencv-contrib-python",
+    "torch",
+    "torchcodec",
+    "torch_modules @ git+https://github.com/ry-yoshida-dev/TorchModules.git",
+]
+
+[project.optional-dependencies]
+dev = [
+    "basedpyright",
+    "mypy",
+    "pytest",
+    "ruff",
+]
+
+[project.urls]
+Homepage = "https://github.com/ry-yoshida-dev/VideoHandler"
+"Bug Tracker" = "https://github.com/ry-yoshida-dev/VideoHandler/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+video_handler = ["py.typed"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+
+untyped_calls_exclude = ["torchcodec"]
+
+[[tool.mypy.overrides]]
+module = ["torchcodec", "torchcodec.*"]
+implicit_reexport = true
+
+[tool.basedpyright]
+pythonVersion = "3.12"
+include = ["src", "tests"]
+typeCheckingMode = "strict"
+reportPrivateImportUsage = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ISC"]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = [
+    "video_handler.combinator.parameters.VideoCombinatorParameters",
+    "video_handler.reader.VideoReaderFactory",
+    "video_handler.reader.VideoReadParameters",
+    "video_handler.reader.factory.VideoReaderFactory",
+    "video_handler.reader.opencv.options.OpenCVReadOptions",
+    "video_handler.reader.parameters.VideoReadParameters",
+    "video_handler.reader.torchcodec.options.TorchCodecReadOptions",
+    "video_handler.writer.OpenCVWriteOptions",
+    "video_handler.writer.VideoWriteParameters",
+    "video_handler.writer.opencv.options.OpenCVWriteOptions",
+    "video_handler.writer.parameters.VideoWriteParameters",
+    "video_handler.writer.torchcodec.options.TorchCodecWriteOptions",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
