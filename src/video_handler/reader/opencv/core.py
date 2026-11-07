@@ -21,7 +21,8 @@ class OpenCVVideoReader:
 
     Implements `VideoFrameReader[BGRFrame]`. Iteration and `read_frame_at`
     use separate captures, so random access never disturbs iteration, and
-    iteration may prefetch in a background thread.
+    iteration may prefetch in a background thread. OpenCV's frame count can be
+    inaccurate, so iteration also stops when a read fails.
 
     Attributes
     ----------

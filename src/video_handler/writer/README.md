@@ -2,9 +2,7 @@
 
 ## Overview
 
-Sequential frame encoding. Both writers implement `VideoFrameWriter`, open the
-output on the first `write` once the frame size is known, reject later frames
-of a different size, and create missing parent directories.
+Sequential frame encoding. Both writers implement `VideoFrameWriter`.
 
 ## Components
 

@@ -2,9 +2,7 @@
 
 ## Overview
 
-Tile several videos into one grid video. Inputs are read with any backend via
-`VideoReaderFactory`, converted to BGR, letterboxed into cells and written with
-`OpenCVVideoWriter`.
+Tile several videos, read with any backend, into one grid video.
 
 ## Components
 

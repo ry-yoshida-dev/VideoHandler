@@ -15,26 +15,16 @@ implement `VideoFrameWriter`, so backend-agnostic code picks a backend at
 runtime with `VideoReaderFactory`. `FrameConverter` converts frames between the
 two layouts, and `VideoCombinator` tiles several videos into one grid video.
 
-For the package layout, see [src/video_handler/README.md](src/video_handler/README.md).
-
 ## Installation
 
 ```bash
 pip install -e .
 ```
 
-With development tools (pytest, mypy, basedpyright, ruff):
+The `torchcodec` backend needs the system FFmpeg (versions 4 to 9), e.g.
+`brew install ffmpeg` on macOS.
 
-```bash
-pip install -e ".[dev]"
-```
-
-`torchcodec` loads the system FFmpeg (versions 4 to 9) at the first decode or
-encode call, so install it first, e.g. `brew install ffmpeg` on macOS. On
-macOS, loading both FFmpeg and OpenCV's bundled copy prints harmless
-`objc ... is implemented in both` warnings.
-
-## Examples
+## Usage
 
 ### Reading
 
@@ -68,9 +58,6 @@ with factory.build("input.mp4") as reader:
         ...
 ```
 
-A reader is a single-pass iterator; call `reset()` to iterate again.
-`read_frame_at` uses its own capture or decoder and never moves iteration.
-
 ### Writing
 
 ```python
@@ -83,19 +70,6 @@ options = OpenCVWriteOptions(codec=VideoCodec.MP4V, is_frame_label_enabled=True)
 with OpenCVVideoWriter("output.mp4", VideoWriteParameters(fps=30), options) as writer:
     for _ in range(100):
         writer.write(np.zeros((480, 640, 3), dtype=np.uint8))
-```
-
-```python
-import torch
-from torch_modules import Device
-
-from video_handler import TorchCodecVideoWriter, TorchCodecWriteOptions, VideoWriteParameters
-
-options = TorchCodecWriteOptions(device=Device.CPU, codec="libx264", crf=18)
-
-with TorchCodecVideoWriter("output.mp4", VideoWriteParameters(fps=30), options) as writer:
-    for _ in range(100):
-        writer.write(torch.zeros((3, 480, 640), dtype=torch.uint8))
 ```
 
 ### Combining
@@ -115,16 +89,3 @@ combinator = VideoCombinator(
 )
 written_frame_count = combinator.combine()
 ```
-
-## Development
-
-```bash
-pytest
-mypy src tests
-basedpyright
-ruff check . && ruff format --check .
-```
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

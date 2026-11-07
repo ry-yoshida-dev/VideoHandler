@@ -26,7 +26,8 @@ class TorchCodecVideoReader:
     decoded, shape ``(3, H, W)`` uint8 RGB on the decode device, with no
     channel flip, device transfer or NumPy conversion. Iteration and
     `read_frame_at` use separate decoders, so random access never disturbs
-    iteration.
+    iteration. Frames yielded during iteration are views into the current
+    decoded run.
 
     Attributes
     ----------

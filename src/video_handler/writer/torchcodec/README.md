@@ -2,9 +2,7 @@
 
 ## Overview
 
-`VideoFrameWriter[RGBTensorFrame]` backed by `torchcodec`'s streaming
-`Encoder`. Frames are buffered in batches of `batch_size`, so memory use does
-not grow with the video length.
+`VideoFrameWriter[RGBTensorFrame]` backed by `torchcodec`'s streaming `Encoder`.
 
 ## Components
 

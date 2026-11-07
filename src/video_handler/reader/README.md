@@ -2,10 +2,8 @@
 
 ## Overview
 
-Sequential and random-access frame reading. Both readers implement
-`VideoFrameReader` and share the same structure: a backend capture/decoder
-for random access, and a separate cursor for iteration that is optionally
-wrapped in a `PrefetchBuffer` decoding ahead in a background thread.
+Sequential and random-access frame reading. Both readers implement `VideoFrameReader` and can
+prefetch frames in a background thread.
 
 ## Components
 
@@ -19,10 +17,3 @@ wrapped in a `PrefetchBuffer` decoding ahead in a background thread.
 | [stream_end.py](stream_end.py) | `StreamEnd`: end-of-stream sentinel of the prefetch queue |
 | [opencv/](opencv/README.md) | `OpenCVVideoReader` |
 | [torchcodec/](torchcodec/README.md) | `TorchCodecVideoReader` |
-
-## Behavior
-
-- A reader is a single-pass iterator (`__iter__` returns itself); `reset()` rewinds to `start_frame`.
-- `skip()` advances without decoding unless prefetching, where the frame is already decoded.
-- `read_frame_at()` raises `IndexError` outside the video and never moves iteration.
-- `last_frame_index` is the index of the frame last yielded or skipped.
