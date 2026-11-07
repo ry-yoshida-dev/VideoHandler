@@ -24,6 +24,26 @@ pip install -e .
 The `torchcodec` backend needs the system FFmpeg (versions 4 to 9), e.g.
 `brew install ffmpeg` on macOS.
 
+The torchcodec on PyPI decodes on the CPU only. Decoding on a CUDA GPU (NVDEC)
+needs the CUDA build, which PyTorch publishes on its own index and which must
+match the installed torch. This repository's `uv` environment takes both from
+the CUDA 13.2 index on Linux. A uv project depending on VideoHandler gets the
+same by adding to its `pyproject.toml`:
+
+```toml
+[project]
+dependencies = ["torch", "torchcodec", ...]
+
+[[tool.uv.index]]
+name = "pytorch-cu132"
+url = "https://download.pytorch.org/whl/cu132"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu132", marker = "sys_platform == 'linux'" }]
+torchcodec = [{ index = "pytorch-cu132", marker = "sys_platform == 'linux'" }]
+```
+
 ## Usage
 
 ### Reading
