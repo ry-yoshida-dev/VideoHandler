@@ -44,6 +44,7 @@ where = ["src"]
 video_handler = ["py.typed"]
 
 [tool.mypy]
+files = ["src", "tests"]
 strict = true
 python_version = "3.12"
 
